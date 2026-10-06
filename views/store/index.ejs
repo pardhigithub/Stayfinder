@@ -1,0 +1,20 @@
+﻿<%- include('../partials/head') %>
+<body>
+<%- include('../partials/nav') %>
+<main class="shell">
+  <section class="hero"><div class="hero-copy"><div class="eyebrow">A better kind of getaway</div><h1>Find a stay<br>that feels like <em>yours.</em></h1><p>Offbeat little hideaways, thoughtful hosts, and room to make the weekend yours.</p>
+    <form class="search-bar" action="/homes" method="GET"><input type="search" name="search" placeholder="Where would you like to go?" aria-label="Search destinations"><button class="button" type="submit">⌕ &nbsp; Explore stays</button></form>
+  </div><div class="hero-stamp" aria-hidden="true">your next<strong>good</strong>story</div></section>
+  <div class="trip-ticker" aria-hidden="true"><div class="trip-ticker-track"><span>STAY A LITTLE DIFFERENT <b>✳</b> FIND YOUR SOMEWHERE <b>✳</b> TAKE THE SCENIC ROUTE <b>✳</b> STAY A LITTLE DIFFERENT <b>✳</b> FIND YOUR SOMEWHERE <b>✳</b> TAKE THE SCENIC ROUTE <b>✳</b></span></div></div>
+  <section class="section"><div class="section-heading"><div><div class="eyebrow">Handpicked for you</div><h2>Places to stay</h2><p>Find a space for your next story.</p></div><a class="text-link" href="/homes">Explore all stays →</a></div>
+  <% if (registeredHome.length) { %><div class="cards"><% registeredHome.forEach(home => { %><article class="listing-card"><a href="/homes/<%= home._id %>"><div class="card-image"><img src="<%= typeof home.photo === 'string' && home.photo.trim() ? (home.photo.startsWith('/' ) ? home.photo : '/' + home.photo) : '/images/house1.png' %>" alt="<%= home.houseName %>" loading="lazy"></div></a><div class="card-body"><div class="card-top"><h3 class="card-title"><%= home.houseName %></h3><span class="rating">★ <%= home.rating %></span></div><p class="location">⌖ <%= home.Location %></p><div class="card-bottom"><div class="price">₹<%= Number(home.Price).toLocaleString('en-IN') %> <span>/ night</span></div><a class="text-link" href="/homes/<%= home._id %>">View stay →</a></div></div></article><% }) %></div><% } else { %><div class="empty-state"><div class="empty-icon">⌂</div><h2>Your next getaway starts here</h2><p>New stays are being added soon. Check back for the first listings.</p><% if (isLoggedIn && user.userType === 'host') { %><a class="button" href="/host/add-home">List your place</a><% } %></div><% } %>
+  </section>
+</main>
+<%- include('../partials/footer') %></body></html>
+
+
+
+
+
+
+

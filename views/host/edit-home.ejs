@@ -1,0 +1,11 @@
+﻿<%- include('../partials/head') %><body><%- include('../partials/nav') %><main class="shell page-wrap"><section class="form-card"><div class="eyebrow"><%= editing ? 'Manage your listing' : 'Share your space' %></div><h1><%= editing ? 'Edit your place' : 'List your place' %></h1><p>Give guests the details they need to picture their stay.</p><% if (error) { %><div class="error-box"><%= error %></div><% } %>
+<form action="/host/<%= editing ? 'edit-home' : 'add-home' %>" method="POST" enctype="multipart/form-data"><% if(editing){ %><input type="hidden" name="id" value="<%= home._id %>"><% } %>
+<div class="field"><label for="houseName">Listing name</label><input id="houseName" name="houseName" maxlength="100" value="<%= editing ? home.houseName : '' %>" placeholder="e.g. A sunny city apartment" required></div>
+<div class="form-grid"><div class="field"><label for="Price">Price per night (₹)</label><input id="Price" name="Price" type="number" min="1" step="1" value="<%= editing ? home.Price : '' %>" placeholder="4500" required></div><div class="field"><label for="rating">Rating (1–5)</label><input id="rating" name="rating" type="number" min="1" max="5" step="0.1" value="<%= editing ? home.rating : '5' %>" required></div></div>
+<div class="field"><label for="Location">Location</label><input id="Location" name="Location" maxlength="120" value="<%= editing ? home.Location : '' %>" placeholder="Neighborhood, city" required></div>
+<div class="field"><label for="description">About the place</label><textarea id="description" name="description" maxlength="2000" placeholder="What makes this stay special?"><%= editing ? home.description : '' %></textarea></div>
+<div class="field"><label for="photo">Listing photo <%= editing ? '(optional)' : '' %></label><input id="photo" type="file" name="photo" accept="image/jpeg,image/png,image/webp" <%= editing ? '' : 'required' %>><span class="sort-note">JPG, PNG, or WebP · up to 5 MB</span><% if(editing){ %><img class="listing-photo-preview" src="<%= typeof home.photo === 'string' && home.photo.trim() ? (home.photo.startsWith('/' ) ? home.photo : '/' + home.photo) : '/images/house1.png' %>" alt="Current listing photo"><% } %></div>
+<button class="button" type="submit"><%= editing ? 'Save changes' : 'Publish listing' %></button></form></section></main><%- include('../partials/footer') %></body></html>
+
+
+

@@ -1,0 +1,23 @@
+﻿{
+  "name": "stayfinder",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A stay listing app built with Express, EJS, and MongoDB.",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "node --watch app.js"
+  },
+  "type": "commonjs",
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "connect-mongodb-session": "^5.0.0",
+    "ejs": "^4.0.1",
+    "express": "^5.2.1",
+    "express-session": "^1.19.0",
+    "express-validator": "^7.3.2",
+    "mongodb": "^7.5.0",
+    "mongoose": "^9.9.1",
+    "multer": "^2.4.0"
+  }
+}
