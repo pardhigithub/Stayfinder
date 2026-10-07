@@ -9,7 +9,7 @@ if (fs.existsSync(envFile)) {
 }
 const express = require('express');
 const session = require('express-session');
-const MongoDBStore = require('connect-mongodb-session')(session);
+const {MongoStore} = require('connect-mongo');
 const mongoose = require('mongoose');
 const multer = require('multer');
 const storeRouter = require('./routes/storeRouter');
@@ -45,8 +45,23 @@ const upload = multer({
   fileFilter: (_req, file, done) => /^image\/(jpeg|png|webp)$/.test(file.mimetype) ? done(null, true) : done(new Error('Please upload a JPG, PNG, or WebP image.'))
 });
 app.use((req, res, next) => req.method === 'POST' && req.path.startsWith('/host/') ? upload.single('photo')(req, res, next) : next());
-const sessionStore = new MongoDBStore({ uri: DB_PATH, collection: 'sessions' });
-app.use(session({ secret: SESSION_SECRET, resave: false, saveUninitialized: false, store: sessionStore, cookie: { httpOnly: true, sameSite: 'lax', maxAge: 7 * 24 * 60 * 60 * 1000 } }));
+
+
+app.use(session({
+    secret: SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    store: MongoStore.create({
+        mongoUrl: DB_PATH,
+        collectionName: 'sessions'
+    }),
+    cookie: {
+        httpOnly: true,
+        sameSite: 'lax',
+        maxAge: 7 * 24 * 60 * 60 * 1000
+    }
+}));
+
 app.use((req, res, next) => {
   req.isLoggedIn = Boolean(req.session.isLoggedIn);
   req.user = req.session.user || null;
@@ -67,7 +82,7 @@ app.use((err, req, res, _next) => {
   const message = err instanceof multer.MulterError && err.code === 'LIMIT_FILE_SIZE' ? 'Images must be 5 MB or smaller.' : err.message || 'Something went wrong.';
   res.status(400).render('404', { pageTitle: 'Request error', message });
 });
-mongoose.connect(DB_PATH).then(() => app.listen(PORT, '0.0.0.0', () => console.log(`Stayfinder listening on 0.0.0.0:${PORT}`))).catch(err => {
+mongoose.connect(DB_PATH).then(() => app.listen(PORT, '0.0.0.0', () => console.log(`Stayfinder listening on 0.0.0.0: http://localhost:${PORT}`))).catch(err => {
   console.error('Could not connect to MongoDB:', err.message);
   process.exit(1);
 });

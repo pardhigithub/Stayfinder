@@ -1,4 +1,4 @@
-﻿{
+{
   "name": "stayfinder",
   "version": "1.0.0",
   "private": true,
@@ -11,7 +11,7 @@
   "type": "commonjs",
   "dependencies": {
     "bcryptjs": "^3.0.3",
-    "connect-mongodb-session": "^5.0.0",
+    "connect-mongo": "^6.0.0",
     "ejs": "^4.0.1",
     "express": "^5.2.1",
     "express-session": "^1.19.0",
